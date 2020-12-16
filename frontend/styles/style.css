@@ -1,0 +1,19 @@
+.label{
+    font-weight: bold;
+    font-size: large;
+    margin: auto;
+}
+.addButton{
+    right: -410px;
+}
+.updateButton{
+    right: -390px;
+}
+.image{
+    margin: auto;
+}
+.homeLabel{
+    font-weight: bold;
+    font-size: large;
+    margin-top: 5%;
+}
