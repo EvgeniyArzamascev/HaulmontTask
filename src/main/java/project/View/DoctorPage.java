@@ -54,14 +54,14 @@ public class DoctorPage extends AppLayout {
     }
 
     private void createDrawer() {
-        RouterLink MainPage = new RouterLink("Home", HomePage.class);
-        RouterLink PersonPage = new RouterLink("Person List", PersonPage.class);
-        RouterLink DoctorPage = new RouterLink("Doctor List", DoctorPage.class);
-        RouterLink RecipePage = new RouterLink("Recipe List", RecipePage.class);
-        RouterLink SpecializationPage = new RouterLink("Specialization List", SpecializationPage.class);
-        RouterLink PriorityPage = new RouterLink("Priority List", PriorityPage.class);
+        RouterLink mainPage = new RouterLink("Home", HomePage.class);
+        RouterLink personPage = new RouterLink("Person List", PersonPage.class);
+        RouterLink doctorPage = new RouterLink("Doctor List", DoctorPage.class);
+        RouterLink recipePage = new RouterLink("Recipe List", RecipePage.class);
+        RouterLink specializationPage = new RouterLink("Specialization List", SpecializationPage.class);
+        RouterLink priorityPage = new RouterLink("Priority List", PriorityPage.class);
         VerticalLayout layout = new VerticalLayout();
-        layout.add(MainPage, PersonPage, DoctorPage, RecipePage, SpecializationPage, PriorityPage);
+        layout.add(mainPage, personPage, doctorPage, recipePage, specializationPage, priorityPage);
         addToDrawer(layout);
     }
 
@@ -147,16 +147,16 @@ public class DoctorPage extends AppLayout {
             return spec.getName();
         }).setHeader("Specialization");
 
-        grid.addComponentColumn(this::EditButton);
-        grid.addComponentColumn(this::DeleteButton);
-        grid.addComponentColumn(this::StatisticsButton);
+        grid.addComponentColumn(this::editButton);
+        grid.addComponentColumn(this::deleteButton);
+        grid.addComponentColumn(this::statisticsButton);
 
         grid.setItems(doctorService.findAll());
         grid.getColumns().forEach(x -> x.setAutoWidth(true));
         return grid;
     }
 
-    private Button EditButton(Doctor doctor) {
+    private Button editButton(Doctor doctor) {
         Button button = new Button("Edit");
         button.addClickListener(x -> {
 
@@ -172,8 +172,8 @@ public class DoctorPage extends AppLayout {
             spec.setItems(specializationList);
             spec.setItemLabelGenerator(Specialization::getName);
 
-            Optional<Doctor> Info = doctorService.findById(doctor.getId());
-            Info.ifPresent(y ->
+            Optional<Doctor> info = doctorService.findById(doctor.getId());
+            info.ifPresent(y ->
                     {
                         name.setValue(y.getName());
                         surname.setValue(y.getSurName());
@@ -231,7 +231,7 @@ public class DoctorPage extends AppLayout {
         return button;
     }
 
-    private Button DeleteButton(Doctor doctor) {
+    private Button deleteButton(Doctor doctor) {
         Button button = new Button("Delete");
         button.addClickListener(x -> {
 
@@ -264,7 +264,7 @@ public class DoctorPage extends AppLayout {
 
     private void onCancel(ConfirmDialog.CancelEvent cancelEvent) {}
 
-    private Button StatisticsButton(Doctor doctor) {
+    private Button statisticsButton(Doctor doctor) {
         Button button = new Button("Statistics");
         button.addClickListener(click -> {
             recipeGrid.setColumns("id", "description", "date", "duration");

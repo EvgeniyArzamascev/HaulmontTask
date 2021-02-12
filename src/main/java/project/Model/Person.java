@@ -25,8 +25,8 @@ public class Person {
     @Column(name = "Phone")
     private String phone;
 
-    @OneToMany(mappedBy = "PersonMapped", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    private List<Recipe> RecipeList;
+    @OneToMany(mappedBy = "personMapped", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    private List<Recipe> recipeList;
 
 
     public Person() {}
@@ -77,10 +77,10 @@ public class Person {
     }
 
     public List<Recipe> getRecipeList() {
-        return RecipeList;
+        return recipeList;
     }
 
     public void setRecipeList(List<Recipe> recipeList) {
-        RecipeList = recipeList;
+        this.recipeList = recipeList;
     }
 }

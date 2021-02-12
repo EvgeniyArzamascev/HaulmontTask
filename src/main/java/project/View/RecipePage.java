@@ -62,14 +62,14 @@ public class RecipePage extends AppLayout {
     }
 
     private void createDrawer() {
-        RouterLink MainPage = new RouterLink("Home", HomePage.class);
-        RouterLink PersonPage = new RouterLink("Person List", PersonPage.class);
-        RouterLink DoctorPage = new RouterLink("Doctor List", DoctorPage.class);
-        RouterLink RecipePage = new RouterLink("Recipe List", RecipePage.class);
-        RouterLink SpecializationPage = new RouterLink("Specialization List", SpecializationPage.class);
-        RouterLink PriorityPage = new RouterLink("Priority List", PriorityPage.class);
+        RouterLink mainPage = new RouterLink("Home", HomePage.class);
+        RouterLink personPage = new RouterLink("Person List", PersonPage.class);
+        RouterLink doctorPage = new RouterLink("Doctor List", DoctorPage.class);
+        RouterLink recipePage = new RouterLink("Recipe List", RecipePage.class);
+        RouterLink specializationPage = new RouterLink("Specialization List", SpecializationPage.class);
+        RouterLink priorityPage = new RouterLink("Priority List", PriorityPage.class);
         VerticalLayout layout = new VerticalLayout();
-        layout.add(MainPage, PersonPage, DoctorPage, RecipePage, SpecializationPage, PriorityPage);
+        layout.add(mainPage, personPage, doctorPage, recipePage, specializationPage, priorityPage);
         addToDrawer(layout);
     }
 
@@ -202,7 +202,7 @@ public class RecipePage extends AppLayout {
         }).setHeader("Priority");
 
 
-        grid.addComponentColumn(this::EditButton);
+        grid.addComponentColumn(this::editButton);
         grid.addComponentColumn(this::deleteButton);
 
         grid.getColumns().forEach(x -> x.setAutoWidth(true));
@@ -210,7 +210,7 @@ public class RecipePage extends AppLayout {
         return grid;
     }
 
-    private Button EditButton(Recipe recipe) {
+    private Button editButton(Recipe recipe) {
         Button button = new Button("Edit");
         button.addClickListener(x -> {
             Dialog dialog = new Dialog();

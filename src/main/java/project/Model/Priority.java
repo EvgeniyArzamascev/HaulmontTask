@@ -6,6 +6,7 @@ import java.util.List;
 @Entity
 @Table(name = "PRIORITY")
 public class Priority {
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,8 +15,8 @@ public class Priority {
     @Column(name = "Name")
     private String name;
 
-    @OneToMany(mappedBy = "PriorityMapped", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    private List<Recipe> RecipeList;
+    @OneToMany(mappedBy = "priorityMapped", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    private List<Recipe> recipeList;
 
     public long getId() {
         return id;
@@ -34,10 +35,10 @@ public class Priority {
     }
 
     public List<Recipe> getRecipeList() {
-        return RecipeList;
+        return recipeList;
     }
 
     public void setRecipeList(List<Recipe> recipeList) {
-        RecipeList = recipeList;
+        this.recipeList = recipeList;
     }
 }

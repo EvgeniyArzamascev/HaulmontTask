@@ -23,11 +23,11 @@ public class Doctor {
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, targetEntity = Specialization.class)
     @JoinColumn(name = "specialization_id")
-    private Specialization SpecializationMapped;
+    private Specialization specializationMapped;
 
 
-    @OneToMany(mappedBy = "DoctorMapped", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    private List<Recipe> RecipeList;
+    @OneToMany(mappedBy = "doctorMapped", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    private List<Recipe> recipeList;
 
     public Doctor() {}
 
@@ -69,18 +69,18 @@ public class Doctor {
     }
 
     public Specialization getSpecializationMapped() {
-        return SpecializationMapped;
+        return specializationMapped;
     }
 
     public void setSpecializationMapped(Specialization specializationMapped) {
-        SpecializationMapped = specializationMapped;
+        this.specializationMapped = specializationMapped;
     }
 
     public List<Recipe> getRecipeList() {
-        return RecipeList;
+        return recipeList;
     }
 
     public void setRecipeList(List<Recipe> recipeList) {
-        RecipeList = recipeList;
+        this.recipeList = recipeList;
     }
 }

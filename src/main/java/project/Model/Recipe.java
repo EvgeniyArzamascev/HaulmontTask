@@ -17,11 +17,11 @@ public class Recipe {
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, targetEntity = Person.class)
     @JoinColumn(name = "person_id")
-    private Person PersonMapped;
+    private Person personMapped;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, targetEntity = Doctor.class)
     @JoinColumn(name = "doctor_id")
-    private Doctor DoctorMapped;
+    private Doctor doctorMapped;
 
     @Column(name = "date")
     private LocalDate date;
@@ -31,7 +31,7 @@ public class Recipe {
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, targetEntity = Priority.class)
     @JoinColumn(name = "priority_id")
-    private Priority PriorityMapped;
+    private Priority priorityMapped;
 
     public Recipe() {}
 
@@ -52,19 +52,19 @@ public class Recipe {
     }
 
     public Person getPersonMapped() {
-        return PersonMapped;
+        return personMapped;
     }
 
     public void setPersonMapped(Person personMapped) {
-        PersonMapped = personMapped;
+        this.personMapped = personMapped;
     }
 
     public Doctor getDoctorMapped() {
-        return DoctorMapped;
+        return doctorMapped;
     }
 
     public void setDoctorMapped(Doctor doctorMapped) {
-        DoctorMapped = doctorMapped;
+        this.doctorMapped = doctorMapped;
     }
 
     public LocalDate getDate() {
@@ -84,10 +84,10 @@ public class Recipe {
     }
 
     public Priority getPriorityMapped() {
-        return PriorityMapped;
+        return priorityMapped;
     }
 
     public void setPriorityMapped(Priority priorityMapped) {
-        PriorityMapped = priorityMapped;
+        this.priorityMapped = priorityMapped;
     }
 }

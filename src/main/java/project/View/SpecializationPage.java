@@ -43,14 +43,14 @@ public class SpecializationPage extends AppLayout {
     }
 
     private void createDrawer() {
-        RouterLink MainPage = new RouterLink("Home", HomePage.class);
-        RouterLink PersonPage = new RouterLink("Person List", PersonPage.class);
-        RouterLink DoctorPage = new RouterLink("Doctor List", DoctorPage.class);
-        RouterLink RecipePage = new RouterLink("Recipe List", RecipePage.class);
-        RouterLink SpecializationPage = new RouterLink("Specialization List", SpecializationPage.class);
-        RouterLink PriorityPage = new RouterLink("Priority List", PriorityPage.class);
+        RouterLink mainPage = new RouterLink("Home", HomePage.class);
+        RouterLink personPage = new RouterLink("Person List", PersonPage.class);
+        RouterLink doctorPage = new RouterLink("Doctor List", DoctorPage.class);
+        RouterLink recipePage = new RouterLink("Recipe List", RecipePage.class);
+        RouterLink specializationPage = new RouterLink("Specialization List", SpecializationPage.class);
+        RouterLink priorityPage = new RouterLink("Priority List", PriorityPage.class);
         VerticalLayout layout = new VerticalLayout();
-        layout.add(MainPage, PersonPage, DoctorPage, RecipePage, SpecializationPage, PriorityPage);
+        layout.add(mainPage, personPage, doctorPage, recipePage, specializationPage, priorityPage);
         addToDrawer(layout);
     }
 
@@ -104,13 +104,13 @@ public class SpecializationPage extends AppLayout {
 
     private Grid configGrid() {
         grid.setColumns("id", "name");
-        grid.addComponentColumn(this::EditButton);
-        grid.addComponentColumn(this::DeleteButton);
+        grid.addComponentColumn(this::editButton);
+        grid.addComponentColumn(this::deleteButton);
         grid.setItems(specializationService.findAll());
         return grid;
     }
 
-    private Button EditButton(Specialization specialization) {
+    private Button editButton(Specialization specialization) {
 
         Button button = new Button("Edit");
         button.addClickListener(x -> {
@@ -119,8 +119,8 @@ public class SpecializationPage extends AppLayout {
             label.addClassName("label");
             TextField Name = new TextField("Name");
 
-            Optional<Specialization> Info = specializationService.findById(specialization.getId()); // запонить значениями
-            Info.ifPresent(y ->
+            Optional<Specialization> info = specializationService.findById(specialization.getId()); // запонить значениями
+            info.ifPresent(y ->
                     {
                         Name.setValue(y.getName());
                     }
@@ -159,17 +159,30 @@ public class SpecializationPage extends AppLayout {
         return button;
     }
 
-    private Button DeleteButton(Specialization specialization) {
+    private Button deleteButton(Specialization specialization) {
         Button button = new Button("Delete");
         button.addClickListener(x -> {
+
             ConfirmDialog dialog = new ConfirmDialog();
             dialog.setHeader("Delete Specialization");
             dialog.setText("You wanna delete this specialization?");
+
             Button delButton = new Button("Delete", VaadinIcon.TRASH.create());
             delButton.addClickListener(e -> {
-                specializationService.delete(specialization);
-                dialog.close();
-                grid.setItems(specializationService.findAll());
+
+                try {
+                    specializationService.delete(specialization);
+                    dialog.close();
+                    grid.setItems(specializationService.findAll());
+                }
+                catch (org.springframework.dao.DataIntegrityViolationException error){
+                    dialog.close();
+                    ConfirmDialog confirmDialog = new ConfirmDialog("Warning!",
+                            "You cannot delete this specialization because he have Doctor", "OK", this::onOK);
+                    confirmDialog.open();
+                }
+
+
             });
             dialog.setConfirmButton(delButton);
             dialog.setCancelButton("Cancel", this::onCancel);
@@ -177,6 +190,8 @@ public class SpecializationPage extends AppLayout {
         });
         return button;
     }
+
+    private void onOK(ConfirmDialog.ConfirmEvent confirmEvent) {}
 
     private void onCancel(ConfirmDialog.CancelEvent cancelEvent) {}
 

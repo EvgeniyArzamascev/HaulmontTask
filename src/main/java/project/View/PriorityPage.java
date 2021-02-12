@@ -43,14 +43,14 @@ public class PriorityPage extends AppLayout {
     }
 
     private void createDrawer() {
-        RouterLink MainPage = new RouterLink("Home", HomePage.class);
-        RouterLink PersonPage = new RouterLink("Person List", PersonPage.class);
-        RouterLink DoctorPage = new RouterLink("Doctor List", DoctorPage.class);
-        RouterLink RecipePage = new RouterLink("Recipe List", RecipePage.class);
-        RouterLink SpecializationPage = new RouterLink("Specialization List", SpecializationPage.class);
-        RouterLink PriorityPage = new RouterLink("Priority List", PriorityPage.class);
+        RouterLink mainPage = new RouterLink("Home", HomePage.class);
+        RouterLink personPage = new RouterLink("Person List", PersonPage.class);
+        RouterLink doctorPage = new RouterLink("Doctor List", DoctorPage.class);
+        RouterLink recipePage = new RouterLink("Recipe List", RecipePage.class);
+        RouterLink specializationPage = new RouterLink("Specialization List", SpecializationPage.class);
+        RouterLink priorityPage = new RouterLink("Priority List", PriorityPage.class);
         VerticalLayout layout = new VerticalLayout();
-        layout.add(MainPage, PersonPage, DoctorPage, RecipePage, SpecializationPage, PriorityPage);
+        layout.add(mainPage, personPage, doctorPage, recipePage, specializationPage, priorityPage);
         addToDrawer(layout);
     }
 
@@ -105,24 +105,35 @@ public class PriorityPage extends AppLayout {
 
     private Grid configGrid() {
         grid.setColumns("id", "name");
-        grid.addComponentColumn(this::EditButton);
-        grid.addComponentColumn(this::DeleteButton);
+        grid.addComponentColumn(this::editButton);
+        grid.addComponentColumn(this::deleteButton);
         grid.setItems(priorityService.findAll());
         return  grid;
     }
 
-    private Button DeleteButton(Priority priority) {
+    private Button deleteButton(Priority priority) {
         Button button = new Button("Delete");
         button.addClickListener(x -> {
+
             ConfirmDialog dialog = new ConfirmDialog();
             dialog.setHeader("Delete Priority");
             dialog.setText("You wanna delete this priority?");
 
             Button delButton = new Button("Delete", VaadinIcon.TRASH.create());
             delButton.addClickListener(e -> {
-                priorityService.delete(priority);
-                dialog.close();
-                grid.setItems(priorityService.findAll());
+
+                try {
+                    priorityService.delete(priority);
+                    dialog.close();
+                    grid.setItems(priorityService.findAll());
+                }
+                catch(org.springframework.dao.DataIntegrityViolationException error){
+                    dialog.close();
+                    ConfirmDialog confirmDialog = new ConfirmDialog("Warning!",
+                            "You cannot delete this priority because he have Recipe", "OK", this::onOK);
+                    confirmDialog.open();
+                }
+
             });
             dialog.setConfirmButton(delButton);
             dialog.setCancelButton("Cancel", this::onCancel);
@@ -131,9 +142,11 @@ public class PriorityPage extends AppLayout {
         return button;
     }
 
+    private void onOK(ConfirmDialog.ConfirmEvent confirmEvent) {}
+
     private void onCancel(ConfirmDialog.CancelEvent cancelEvent) {}
 
-    private Button EditButton(Priority priority) {
+    private Button editButton(Priority priority) {
         Button button = new Button("Edit");
         button.addClickListener(x -> {
             Dialog dialog = new Dialog();
@@ -141,8 +154,8 @@ public class PriorityPage extends AppLayout {
             label.addClassName("label");
             TextField Name = new TextField("Name");
 
-            Optional<Priority> Info = priorityService.findById(priority.getId()); // запонить значениями
-            Info.ifPresent(y ->
+            Optional<Priority> info = priorityService.findById(priority.getId()); // запонить значениями
+            info.ifPresent(y ->
                     {
                         Name.setValue(y.getName());
                     }

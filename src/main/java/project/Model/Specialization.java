@@ -1,7 +1,6 @@
 package project.Model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -16,8 +15,8 @@ public class Specialization {
     @Column(name = "Name")
     private String name;
 
-    @OneToMany(mappedBy = "SpecializationMapped", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    private List<Doctor> DoctorList;
+    @OneToMany(mappedBy = "specializationMapped", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    private List<Doctor> doctorList;
 
     public Specialization() {
     }
@@ -39,10 +38,10 @@ public class Specialization {
     }
 
     public List<Doctor> getDoctorList() {
-        return DoctorList;
+        return doctorList;
     }
 
     public void setDoctorList(List<Doctor> doctorList) {
-        DoctorList = doctorList;
+        this.doctorList = doctorList;
     }
 }

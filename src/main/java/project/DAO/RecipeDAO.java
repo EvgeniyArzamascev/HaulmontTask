@@ -12,13 +12,13 @@ import java.util.List;
 public interface RecipeDAO extends JpaRepository<Recipe, Long> {
 
     @Query("select c from Recipe c " +
-            "where lower(c.PersonMapped.surName) like lower(concat('%', :searchTerm, '%')) "
+            "where lower(c.personMapped.surName) like lower(concat('%', :searchTerm, '%')) "
             +
-            "or lower(c.PriorityMapped.name) like lower(concat('%', :searchTerm, '%'))"
+            "or lower(c.priorityMapped.name) like lower(concat('%', :searchTerm, '%'))"
             +
             "or lower(c.description) like lower(concat('%', :searchTerm, '%'))"
             +
-            "or lower(c.DoctorMapped.surName) like lower(concat('%', :searchTerm, '%'))")
+            "or lower(c.doctorMapped.surName) like lower(concat('%', :searchTerm, '%'))")
     List<Recipe> search(@Param("searchTerm") String searchTerm);
 
 }
